@@ -4,7 +4,7 @@ A brainstorming glass door for the browser. Stick notes on frosted glass, write 
 
 ## What works today
 
-- **The door**: frosted (or clear) double glass doors with a blurred office behind, one silhouette per participant. Yours steps closer to the door while you write.
+- **The door**: clear glass double doors onto a bright office (aluminium frame, chrome fittings and handles, a frosted privacy strip, reflections and glass edges). Switch to frosted privacy glass or a night mode with neon markers from the menu. Each participant is someone in the office; whoever is writing walks up to the door.
 - **Sticky notes**: drag one off the pad (or press `N`), type, press Enter. Each person has their own note colour, and every note is signed with your name and the date. Click a note to bring it to the front, drag it to move it, double-click to edit it.
 - **Markers**: five classic markers on frosted glass, five neon markers on clear glass. Freehand strokes use [perfect-freehand](https://github.com/steveruizok/perfect-freehand), with pen pressure when there is one.
 - **Text** in marker handwriting, and an **eraser** that wipes marker (never notes).

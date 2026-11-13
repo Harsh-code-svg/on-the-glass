@@ -16,6 +16,13 @@ export function isScene(x: unknown): x is Scene {
   );
 }
 
+/** Bring older sessions up to date ("clear" glass became "night"). */
+export function normalizeScene(scene: Scene): Scene {
+  const g = (scene.door?.glass as string) ?? "daylight";
+  const glass = g === "clear" ? "night" : g === "frosted" || g === "night" || g === "daylight" ? g : "daylight";
+  return { ...scene, door: { ...scene.door, glass } };
+}
+
 /* ---------- browser autosave (like Excalidraw's localStorage save) ---------- */
 
 export function loadLocalScene(): Scene | null {
@@ -23,7 +30,7 @@ export function loadLocalScene(): Scene | null {
     const raw = localStorage.getItem(SCENE_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
-    return isScene(parsed) ? parsed : null;
+    return isScene(parsed) ? normalizeScene(parsed) : null;
   } catch {
     return null;
   }
@@ -87,7 +94,7 @@ export async function readSceneFile(file: File): Promise<Scene> {
     throw new Error("That file isn’t an On the Glass session.");
   }
   if (!isScene(parsed)) throw new Error("That file isn’t an On the Glass session.");
-  return parsed;
+  return normalizeScene(parsed);
 }
 
 export async function exportPng(node: HTMLElement, title: string) {

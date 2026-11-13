@@ -1,7 +1,8 @@
 /** A session is one JSON "scene", the same idea as an .excalidraw file. */
 
 export type Tool = "select" | "marker" | "text" | "eraser";
-export type GlassKind = "frosted" | "clear";
+/** daylight: clear glass, bright office · frosted: privacy glass · night: dark office, neon markers */
+export type GlassKind = "daylight" | "frosted" | "night";
 
 export interface Participant {
   id: string;

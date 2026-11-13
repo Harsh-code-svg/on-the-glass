@@ -9,7 +9,7 @@ export const emptyScene = (): Scene => ({
   type: "on-the-glass",
   version: 1,
   title: "Untitled session",
-  door: { glass: "frosted" },
+  door: { glass: "daylight" },
   participants: [],
   elements: [],
 });

@@ -1,7 +1,7 @@
 :root {
   --ink: #2a241e;
   --ink-strong: #1d1d1f;
-  --wall: #cbc3b6;
+  --wall: #dedbd4;
   --ui-bg: rgba(251, 249, 245, 0.86);
   --ui-border: rgba(255, 255, 255, 0.7);
   --shadow: 0 10px 28px rgba(40, 28, 18, 0.2);
@@ -13,7 +13,7 @@
 
 * { box-sizing: border-box; }
 html, body, #root { margin: 0; height: 100%; }
-body { background: linear-gradient(180deg, #d6cfc4 0%, var(--wall) 100%); overflow: hidden; }
+body { background: linear-gradient(180deg, #ecebe7 0%, var(--wall) 100%); overflow: hidden; }
 button { font: inherit; color: inherit; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
@@ -73,82 +73,108 @@ button { font: inherit; color: inherit; }
 .door {
   position: absolute; left: 0; top: 0; width: 1440px; height: 900px;
   transform-origin: 0 0; overflow: hidden; touch-action: none; user-select: none;
-  background: linear-gradient(180deg, #d6cfc4 0%, var(--wall) 100%);
+  background: linear-gradient(180deg, #ecebe7 0%, var(--wall) 100%);
 }
 .door.tool-marker { cursor: crosshair; }
 .door.tool-text { cursor: text; }
 .door.tool-eraser { cursor: cell; }
 
-/* the room behind the glass */
-.room { position: absolute; left: 44px; top: 44px; right: 44px; bottom: 44px; overflow: hidden; background: #3a2d24; }
-.room > div { position: absolute; }
-.room-light {
-  inset: -60px; filter: blur(18px);
+/* the room behind the glass (see Room.tsx) */
+.room { position: absolute; left: 44px; top: 44px; width: 1352px; height: 812px; overflow: hidden; background: #e6e8e7; }
+.room-svg { position: absolute; left: 0; top: 0; transition: filter .6s ease; }
+.room-near { transition: opacity .5s ease; }
+.room-daylight .room-far { filter: blur(3.4px) contrast(.8) brightness(1.06) saturate(.8); }
+.room-daylight .room-near { filter: blur(5px) contrast(.8) saturate(.8); opacity: .9; }
+.room-frosted .room-far, .room-frosted .room-near { filter: blur(16px) saturate(.85); }
+.room-night { background: #0b0e12; }
+.room-night .room-far { filter: blur(2.4px) brightness(.28) saturate(.6); }
+.room-night .room-near { filter: blur(5px) brightness(.26) saturate(.6); }
+.room-light { position: absolute; inset: 0; pointer-events: none; }
+.room-daylight .room-light, .room-frosted .room-light {
   background:
-    radial-gradient(circle at 12% 9%, rgba(255,222,160,.95) 0, rgba(255,196,120,.45) 4%, transparent 11%),
-    radial-gradient(circle at 36% 7%, rgba(255,222,160,.9) 0, rgba(255,196,120,.4) 4%, transparent 11%),
-    radial-gradient(circle at 62% 9%, rgba(255,222,160,.95) 0, rgba(255,196,120,.45) 4%, transparent 11%),
-    radial-gradient(circle at 88% 7%, rgba(255,222,160,.9) 0, rgba(255,196,120,.4) 4%, transparent 11%),
-    radial-gradient(ellipse 22% 18% at 24% 58%, rgba(255,176,96,.55), transparent 70%),
-    radial-gradient(ellipse 18% 16% at 71% 62%, rgba(255,186,110,.45), transparent 70%),
-    radial-gradient(ellipse 60% 40% at 50% 40%, rgba(255,200,140,.25), transparent 70%),
-    linear-gradient(180deg, #7a6150 0%, #594536 38%, #3b2e25 70%, #2a211b 100%);
+    radial-gradient(ellipse 45% 75% at 100% 45%, rgba(255,255,255,.38), transparent 70%),
+    radial-gradient(ellipse 60% 30% at 50% 0%, rgba(255,255,255,.25), transparent 70%),
+    linear-gradient(180deg, rgba(255,255,255,.1), rgba(255,255,255,.04) 60%, rgba(40,30,20,.05));
 }
-.room-window { right: 7%; top: 16%; width: 17%; height: 40%; background: linear-gradient(180deg, #c9d3d9, #9aa8b1); opacity: .45; filter: blur(16px); }
-.room-shelf { left: 4%; top: 30%; width: 13%; height: 34%; background: #2b201a; opacity: .55; filter: blur(14px); }
-.room-desks { left: 0; right: 0; top: 66%; height: 9%; background: #2a1f18; opacity: .6; filter: blur(14px); }
-.room-plant { left: 44%; top: 46%; width: 90px; height: 150px; border-radius: 50%; background: #3e4a2c; opacity: .55; filter: blur(16px); }
-.silhouette { display: flex; flex-direction: column; align-items: center; transition: all .6s ease; }
-.silhouette-head { border-radius: 50%; background: #1b130f; transition: all .6s ease; }
-.silhouette-body { margin-top: 7px; background: #1b130f; transition: all .6s ease; }
+.room-night .room-light {
+  background:
+    radial-gradient(ellipse 30% 18% at 40% 52%, rgba(110,160,255,.10), transparent 70%),
+    radial-gradient(ellipse 30% 18% at 70% 55%, rgba(110,160,255,.08), transparent 70%);
+}
 
-/* glass */
-.frost, .reflections { position: absolute; left: 44px; top: 44px; right: 44px; bottom: 44px; pointer-events: none; }
-.frost-frosted {
-  background: linear-gradient(180deg, rgba(247,243,237,.56) 0%, rgba(240,236,230,.5) 60%, rgba(236,232,226,.56) 100%);
-  box-shadow: inset 0 0 90px rgba(255,255,255,.38), inset 0 0 18px rgba(255,255,255,.35);
-}
-.frost-clear {
-  background: linear-gradient(180deg, rgba(16,18,22,.5) 0%, rgba(12,14,18,.58) 100%);
-  box-shadow: inset 0 0 70px rgba(255,255,255,.08);
-}
-.grain { position: absolute; left: 44px; top: 44px; opacity: .14; mix-blend-mode: overlay; pointer-events: none; }
-.reflections {
+/* the glass: one element per door leaf */
+.pane { position: absolute; top: 44px; height: 812px; overflow: hidden; pointer-events: none; }
+.pane > div { position: absolute; inset: 0; }
+.pane-daylight .pane-tint { background: linear-gradient(180deg, rgba(206,229,225,.10) 0%, rgba(188,216,210,.17) 100%); }
+.pane-frosted .pane-tint { background: linear-gradient(180deg, rgba(246,248,247,.66), rgba(238,241,240,.6)); }
+.pane-night .pane-tint { background: linear-gradient(180deg, rgba(10,16,22,.28), rgba(10,16,22,.38)); }
+.pane-reflect {
   mix-blend-mode: screen;
   background:
-    linear-gradient(112deg, transparent 14%, rgba(255,255,255,.16) 18%, rgba(255,255,255,.05) 23%, transparent 27%),
-    linear-gradient(112deg, transparent 56%, rgba(255,255,255,.11) 59%, transparent 64%),
-    linear-gradient(112deg, transparent 66%, rgba(255,255,255,.06) 68%, transparent 71%);
+    radial-gradient(ellipse 26% 2.6% at 28% 5%, rgba(255,255,255,.7), transparent 70%),
+    radial-gradient(ellipse 26% 2.6% at 76% 8%, rgba(255,255,255,.55), transparent 70%),
+    radial-gradient(ellipse 18% 2% at 46% 15%, rgba(255,255,255,.4), transparent 70%),
+    radial-gradient(ellipse 14% 1.6% at 62% 21%, rgba(255,255,255,.3), transparent 70%);
+  opacity: .55;
 }
-.condensation {
-  position: absolute; left: 44px; top: 44px; pointer-events: none;
-  -webkit-mask-image: linear-gradient(to top, #000 0, rgba(0,0,0,.6) 60px, transparent 150px), linear-gradient(to right, #000 0, transparent 80px), linear-gradient(to left, #000 0, transparent 80px), linear-gradient(to bottom, rgba(0,0,0,.5) 0, transparent 50px);
-  mask-image: linear-gradient(to top, #000 0, rgba(0,0,0,.6) 60px, transparent 150px), linear-gradient(to right, #000 0, transparent 80px), linear-gradient(to left, #000 0, transparent 80px), linear-gradient(to bottom, rgba(0,0,0,.5) 0, transparent 50px);
+.pane-night .pane-reflect { opacity: .9; }
+.pane-sheen {
+  mix-blend-mode: screen;
+  background:
+    linear-gradient(104deg, transparent 20%, rgba(255,255,255,.12) 26%, rgba(255,255,255,.03) 32%, transparent 36%),
+    linear-gradient(104deg, transparent 62%, rgba(255,255,255,.08) 65%, transparent 69%),
+    linear-gradient(180deg, rgba(255,255,255,.08), transparent 18%);
 }
-.smudge { position: absolute; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,255,255,.16), transparent 70%); pointer-events: none; }
+.pane-night .pane-sheen { opacity: .7; }
+/* frosted privacy strip at waist height, as on real office glass */
+.pane-band {
+  top: 520px !important; bottom: auto !important; height: 42px;
+  background:
+    repeating-linear-gradient(90deg, rgba(255,255,255,0) 0 6px, rgba(255,255,255,.18) 6px 8px),
+    rgba(246,248,247,.55);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 1px 0 rgba(255,255,255,.4), 0 -1px 0 rgba(255,255,255,.4);
+}
+.pane-frosted .pane-band { display: none; }
+.pane-night .pane-band { background: repeating-linear-gradient(90deg, rgba(255,255,255,0) 0 6px, rgba(255,255,255,.06) 6px 8px), rgba(190,205,212,.14); }
+.pane-edge { box-shadow: inset 0 0 0 1px rgba(255,255,255,.35), inset 0 0 28px rgba(110,160,148,.12); }
+
+.smudge { position: absolute; border-radius: 50%; background: radial-gradient(ellipse, rgba(255,255,255,.13), transparent 70%); pointer-events: none; }
 .print {
-  position: absolute; width: 24px; height: 32px; border-radius: 50%; pointer-events: none;
-  background: repeating-radial-gradient(ellipse at 50% 55%, rgba(255,255,255,.3) 0 1px, transparent 1px 3px);
+  position: absolute; width: 22px; height: 30px; border-radius: 50%; pointer-events: none; opacity: .7;
+  background: repeating-radial-gradient(ellipse at 50% 55%, rgba(255,255,255,.32) 0 1px, transparent 1px 3px);
   -webkit-mask-image: radial-gradient(ellipse, #000 35%, transparent 72%);
   mask-image: radial-gradient(ellipse, #000 35%, transparent 72%);
 }
 
 /* hardware sits in front of the writing */
 .hardware { position: absolute; inset: 0; pointer-events: none; z-index: 100000; }
-.frame {
-  position: absolute; left: 26px; top: 26px; right: 26px; bottom: 26px; border: 18px solid #2c2c2f;
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.12), inset 0 2px 6px rgba(0,0,0,.35), 0 2px 0 rgba(255,255,255,.35), 0 10px 30px rgba(60,45,30,.22);
+.rail { position: absolute; box-shadow: 0 1px 3px rgba(0,0,0,.18); }
+.rail-top, .rail-bottom { left: 26px; right: 26px; height: 18px; background: linear-gradient(180deg, #f3f4f5 0%, #cfd3d6 40%, #a7acb1 60%, #e3e5e7 100%); }
+.rail-top { top: 26px; }
+.rail-bottom { top: 856px; background: linear-gradient(180deg, #d9dcdf 0%, #a3a8ad 50%, #8d9297 100%); }
+.rail-left, .rail-right { top: 26px; height: 848px; width: 18px; background: linear-gradient(90deg, #e3e5e7 0%, #b9bdc2 45%, #9ea3a8 60%, #eef0f1 100%); }
+.rail-left { left: 26px; }
+.rail-right { right: 26px; }
+/* the gap between the two leaves: you see the glass edges, which look green */
+.seam-gap {
+  position: absolute; left: 716px; top: 44px; width: 8px; height: 812px;
+  background: linear-gradient(90deg, rgba(104,156,142,.8) 0 2px, rgba(255,255,255,.65) 2px 3px, rgba(40,52,48,.3) 3px 5px, rgba(255,255,255,.65) 5px 6px, rgba(104,156,142,.8) 6px 8px);
 }
-.seam {
-  position: absolute; left: 714px; top: 44px; width: 12px; height: 812px;
-  background: linear-gradient(90deg, #1f1f22 0%, #4a4a4f 30%, #2c2c2f 55%, #18181a 100%);
-  box-shadow: 3px 0 8px rgba(0,0,0,.18), -3px 0 8px rgba(0,0,0,.18);
+.fitting {
+  position: absolute; width: 64px; height: 34px; border-radius: 3px;
+  background: linear-gradient(180deg, #f6f7f8 0%, #c3c8cc 45%, #9fa4a9 55%, #e6e8ea 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,.25), inset 0 0 0 1px rgba(255,255,255,.55);
 }
-.handle {
-  position: absolute; top: 250px; width: 14px; height: 400px; border-radius: 7px;
-  background: linear-gradient(90deg, #6f7175 0%, #e9eaec 32%, #c3c5c9 52%, #8a8c90 78%, #5f6165 100%);
-  box-shadow: 12px 8px 16px rgba(30,20,12,.28);
+.handle { position: absolute; top: 250px; width: 14px; height: 400px; }
+.handle-bar {
+  position: absolute; inset: 0; border-radius: 7px;
+  background: linear-gradient(90deg, #858a8f 0%, #f8f9fa 28%, #d2d6d9 46%, #9aa0a5 68%, #eceef0 84%, #7b8085 100%);
+  box-shadow: 12px 10px 18px rgba(25,25,25,.22), 2px 2px 3px rgba(0,0,0,.2);
 }
+.handle-post { position: absolute; left: -4px; width: 22px; height: 12px; border-radius: 3px; background: linear-gradient(180deg, #e8eaec, #9ca1a6); box-shadow: 6px 6px 8px rgba(25,25,25,.2); }
+.handle-post-top { top: 36px; }
+.handle-post-bottom { bottom: 36px; }
 
 /* ---------------- content on the glass ---------------- */
 
@@ -157,8 +183,9 @@ button { font: inherit; color: inherit; }
 
 .empty-hint {
   position: absolute; left: 0; right: 0; top: 380px; margin: 0; text-align: center; pointer-events: none;
-  font: 34px var(--marker-font); color: rgba(42, 36, 30, 0.72);
+  font: 34px var(--marker-font); color: rgba(29, 29, 31, 0.6);
 }
+.glass-night .empty-hint { color: rgba(244, 239, 230, 0.7); }
 
 .marker-text {
   position: absolute; margin: 0; padding: 0 2px; white-space: pre; line-height: 1.25;

@@ -98,8 +98,9 @@ export function TopBar({
             {item("Export image", "", <Image size={18} />, onExport)}
             <div className="menu-sep" />
             <p className="menu-heading">Glass</p>
-            {glassItem("frosted", "Frosted · classic markers")}
-            {glassItem("clear", "Clear · neon markers")}
+            {glassItem("daylight", "Clear glass · daylight")}
+            {glassItem("frosted", "Frosted privacy glass")}
+            {glassItem("night", "Night · neon markers")}
             <div className="menu-sep" />
             {item("Change your name", "", <UserRound size={18} />, onRename)}
           </div>

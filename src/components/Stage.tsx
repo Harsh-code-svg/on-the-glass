@@ -172,7 +172,7 @@ export const Stage = forwardRef<HTMLDivElement>(function Stage(_props, doorRef) 
               if (typeof doorRef === "function") doorRef(node);
               else if (doorRef) doorRef.current = node;
             }}
-            className={"door tool-" + tool}
+            className={"door tool-" + tool + " glass-" + scene.door.glass}
             style={{ transform: `scale(${scale})` }}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}

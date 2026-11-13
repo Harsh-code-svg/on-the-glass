@@ -26,23 +26,24 @@ export interface Marker {
   color: string;
 }
 
-/** Classic markers for frosted glass, neon markers for clear (dark) glass. */
-export const MARKERS: Record<GlassKind, Marker[]> = {
-  frosted: [
+const CLASSIC: Marker[] = [
     { name: "Black", color: "#1d1d1f" },
     { name: "Blue", color: "#1d42a8" },
     { name: "Pink", color: "#b8255a" },
     { name: "Green", color: "#17704a" },
     { name: "Purple", color: "#5a32a0" },
-  ],
-  clear: [
+];
+
+const NEON: Marker[] = [
     { name: "White", color: "#f4efe6" },
     { name: "Cyan", color: "#5fe3ff" },
     { name: "Pink", color: "#ff7ad9" },
     { name: "Lime", color: "#b8ff5c" },
     { name: "Yellow", color: "#ffd84d" },
-  ],
-};
+];
+
+/** Classic markers in daylight and on frosted glass, neon markers at night. */
+export const MARKERS: Record<GlassKind, Marker[]> = { daylight: CLASSIC, frosted: CLASSIC, night: NEON };
 
 export const MARKER_SIZE = 6;
 export const TEXT_SIZE = 30;
